@@ -2,9 +2,9 @@ import java.awt.Color;
 
 public class Chap04_Notes
 {
-	public void decreaseRed()	// page 93
+	public void decreaseRed(Picture pic)	// page 93
 	{
-		Pixel[] pixelArray = this.getPixels();	// appears line 95: 
+		Pixel[] pixelArray = pic.getPixels();	// appears line 95: 
 		/*
 		 * Debug: when you execute pictureObject.decreaseRed() the runtime checks the "Picture class"
 		 */
@@ -40,13 +40,15 @@ public class Chap04_Notes
 		// 
 		
 		// String fileName = FileChooser.pickAFile();
-		String fileName = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/caterpillar.jpg";
+		Chap04_Notes notes = new Chap04_Notes();
+		
+		String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
 		Picture pictureObject = new Picture(fileName);
 		pictureObject.show();
 		
 		// call new method
 		pictureObject.explore();
-		pictureObject.decreaseRed();	// error
+		notes.decreaseRed(pictureObject);	// error
 		pictureObject.explore();
 		
 		
