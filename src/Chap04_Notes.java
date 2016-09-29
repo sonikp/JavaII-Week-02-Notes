@@ -42,7 +42,10 @@ public class Chap04_Notes
 		// String fileName = FileChooser.pickAFile();
 		Chap04_Notes notes = new Chap04_Notes();
 		
-		String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
+
+		// String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
+		String fileName = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/caterpillar.jpg";
+		 
 		Picture pictureObject = new Picture(fileName);
 		pictureObject.show();
 		
