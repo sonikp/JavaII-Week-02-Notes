@@ -8,7 +8,7 @@ public class Chap05_Exercise01 extends SimplePicture
 	 * Method to lighten the colors in the picture
 	 * 
 	 */
-	public void lighten2()
+	public void lighten2(Picture pic)
 	{
 		Color color = null;
 		Pixel pixel = null;
@@ -47,7 +47,7 @@ public class Chap05_Exercise01 extends SimplePicture
 		Picture pictureImage = new Picture(fileName);
 		pictureImage.show();
 		notes.lighten2(pictureImage);	// from SimplePicture class
-		
+		pictureImage.show();			// show picture after lightening
 		
 	}
 }

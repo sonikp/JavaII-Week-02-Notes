@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.color.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
@@ -72,6 +73,75 @@ public class Picture extends SimplePicture
   ////////////////////// methods ///////////////////////////////////////
   
 	/*
+	 * Adjust red method to try as a example from
+	 * the class lesson text
+	 */
+  public void adjustRedForLoop(int deltaFactor)
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  int value = 0;
+	  for (Pixel pixel:pixelArray)
+	  {
+		  value = pixel.getRed();
+		  value = (int) (value * deltaFactor);	// adjust red by deltaFactor
+		  pixel.setRed(value);
+	  }
+  }
+  
+  		/*
+  		 * exercise while loop
+  		 * adjust red using a while loop
+  		 */
+  public void adjustRedWhileLoop(int deltaFactor)
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  int value = 0;
+	  int pixIndex = 0;
+	  boolean done = false;
+	  
+	  while(!done)
+	  {
+		  value = pixelArray[pixIndex].getRed();
+		  value = (int)(value * deltaFactor);	// adjust red by deltaFactor
+		  pixelArray[pixIndex].setRed(value);
+		  pixIndex++;
+		  
+		  if (pixIndex == pixelArray.length)
+		  {
+			  done = true;
+		  }
+	  }
+  }
+  
+  /*
+   * Program 16: grayscale 
+   *  incidental method that did not appear in the book
+   * for some reason
+   * found here: http://slideplayer.com/slide/8381573/
+   */
+  
+  public void grayscale()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixelObj = null;
+	  int intensity = 0;
+	  
+	  // loop through all the pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get the current pixel
+		  pixelObj = pixelArray[i];
+		  
+		  // compute the average intensity
+		  intensity = (pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3;
+		  
+		  // set the pixel color
+		  pixelObj.setColor(new Color(intensity,intensity,intensity));
+	  }
+  }
+  
+  
+  	/*
 	 * Program 18: Lighten the Picture Using Nested Loops
 	 * Method to lighten the colors in the picture
 	 * 
@@ -288,30 +358,568 @@ public class Picture extends SimplePicture
    * Program 30: Scaling down a picture (Smaller)
    * 
    */
-  public void copyJakitaSmaller()
+  public void copyPictureSmaller()
   {
-	  String filePic = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/katie.jpg";
-	  Picture jakitaPicture = new Picture(filePic);
-	  System.out.println(jakitaPicture);
+	  String filePic = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/katie.jpg";
+	  Picture thePicture = new Picture(filePic);
+	  System.out.println(thePicture);
 	  Pixel sourcePixel = null;
 	  Pixel targetPixel = null;
 	  
 	  // loop through columns
-	  for ( int sourceX = 0, targetX = 0; sourceX < jakitaPicture.getWidth(); sourceX+=2, targetX++ )
+	  for ( int sourceX = 0, targetX = 0; sourceX < thePicture.getWidth(); sourceX+=2, targetX++ )
 	  {
 		  //loop through rows
-		  for ( int sourceY = 0, targetY = 0; sourceY < jakitaPicture.getHeight(); sourceY+=2, targetY++ )
+		  for ( int sourceY = 0, targetY = 0; sourceY < thePicture.getHeight(); sourceY+=2, targetY++ )
 		  {
-			  sourcePixel = jakitaPicture.getPixel(sourceX, sourceY);
+			  sourcePixel = thePicture.getPixel(sourceX, sourceY);
 			  targetPixel = this.getPixel(targetX, targetY);
 			  targetPixel.setColor(sourcePixel.getColor());
 		  }
 	  }
-	  
-	  		
   }
   
-  /**
+  /*
+   * Program: 31 Scaling the Picture Up (Larger)
+   * Method to copy a flower but scaled to a 2x 
+   * normal size onto the current picture
+   */
+  
+  public void copyPictureLarger()
+  {
+	  Picture thePicture = new Picture(FileChooser.getMediaPath("rose.jpg"));
+	  Pixel sourcePixel = null;
+	  Pixel targetPixel = null;
+	  
+	  // loop through columns
+	  for ( double sourceX = 0, targetX = 0; sourceX < thePicture.getWidth(); sourceX = sourceX + 0.5, targetX++)
+	  {
+		  // loop through the rows
+		  for ( double sourceY = 0, targetY = 0; sourceY < thePicture.getHeight(); sourceY = sourceY + 0.5, targetY++)
+		  {
+			  sourcePixel = thePicture.getPixel((int) sourceX, (int) sourceY);
+			  targetPixel = this.getPixel((int) targetX, (int) targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+					  
+		  }
+	  }
+	  
+  }
+  
+  /*
+   * Program 33: Color Replacement: Turns Brown to Red
+   * 
+   * 
+   */
+  
+  public void turnBrownIntoRed()
+  {
+	  Color brown = new Color(42,25,15);
+	  Pixel[] pixels = this.getPixels();
+	  Pixel pixel = null;
+	  
+	  // loop through the pixels
+	  for ( int i = 0; i < pixels.length; i++)
+	  {
+		  // get the current pixels
+		  pixel = pixels[i];
+		  
+		  // check if distance to brown and if so double the red
+		  if (pixel.colorDistance(brown) < 50.0)
+		  {
+			  pixel.setColor(new Color((int) (pixel.getRed() * 2.0), pixel.getGreen(), pixel.getBlue()));
+			  
+		  }
+	  }
+	  
+  }
+  
+  /*
+   * Program 34: Color Replacements in a Rectangular Area
+   * 
+   */
+  public void turnBrownToRedInRectangle()
+  {
+	  Color brown = new Color(42,25,15);
+	  Pixel pixel = null;
+	  
+	  // head top x = 63 y = 10, bottom x = 140 y = 72
+	  
+	  // loop through the x values
+	  for ( int x = 63; x < 140; x++)
+	  {
+		  for ( int y = 10; y < 72; y++)
+		  {
+			  // get current pixel
+			  pixel = this.getPixel(x, y);
+			  
+			  // check if distance to brown and if so double red
+			  if (pixel.colorDistance(brown) < 50.0)
+			  {
+				  pixel.setColor(new Color((int)(pixel.getRed() * 2.0), pixel.getGreen(), pixel.getBlue()));
+				  
+			  }
+		  }
+	  }
+  }
+  
+  /*
+   * program 35; Color replacements with passing in a range
+   * 
+   * specifying startX, endX-1, startY, endY-1
+   * 
+   */
+  
+  public void turnBrowntoRedInRectangleDimensions(int startX, int endX, int startY, int endY, double distance)
+  {
+	  Color brown = new Color(42,25,15);
+	  Pixel pixel = null;
+	  
+	  // loop through the x values
+	  for (int x = startX; x < endX; x++)
+	  {
+		  // loop through the Y values
+		  for (int y = startY; y < endY; y++)
+		  {
+			  // get the current pixel
+			  pixel = this.getPixel(x, y);
+			  
+			  // check if distance to brown is less than the passed distance, and if so double red
+			  if (pixel.colorDistance(brown) < distance)
+			  {
+				  pixel.setColor(new Color((int)(pixel.getRed() * 2.0), pixel.getGreen(), pixel.getBlue()));
+				  
+			  }
+			  
+		  }
+	  }
+  }
+  
+  /*
+   * program 36: remove red-eye
+   * Method to remove red-eye from the current picture object
+   * The red will be replaced with the passed newColor
+   * @param startX top LH corner x value of a rectangle
+   * @param startY top LH corner y value of a rectangle
+   * @param endX bottom RH corner x value of a rectangle
+   * @param endY bottom RH corner y value of a rectangle
+   */
+  
+  public void removeRedEye(int startX, int startY, int endX, int endY, Color newColor)
+  {
+	  Pixel pixel = null;
+	  
+	  // loop through the (column) pixels in the rectangle defined by input values
+	  for ( int x = startX; x < endX; x++)
+	  {
+		  // loop through the rows
+		  for ( int y = startY; y < endY; y++)
+		  {
+			  // get current pixel
+			  pixel = this.getPixel(x, y);
+			  
+			  // conditional, if pixel color is near red, the change it
+			  if (pixel.colorDistance(Color.red) < 167 )
+			  {
+				  pixel.setColor(newColor);
+				  
+			  }
+		  }
+	  }
+  }
+  
+  /*
+   * program: 37 Edge Detection
+   * Method to do simple edge detection
+   * comparing the absolute value of the difference between the color intensities.
+   * 
+   * If the absolute value of the difference between the color intensities is less that a passed amount
+   * the top pixel color will be set to white. Otherwise it will be set to black
+   * @param amount of the absolute value of the differences in the color average is less that this set the color to white
+   * 
+   */
+  public void edgeDetection(double amount)
+  {
+	  Pixel topPixel = null;
+	  Pixel bottomPixel = null;
+	  double topAverage = 0.0;
+	  double bottomAverage = 0.0;
+	  int endY = this.getHeight() -1;
+	  
+	  // loop through y values from 0 to height -1, (since compare to below pixel
+	  for ( int y = 0; y < endY; y++)
+	  {
+		  // loop through the x values from 0 to width
+		  for ( int x = 0; x < this.getWidth(); x++)
+		  {
+			  // get the top and bottom pixels
+			  topPixel = this.getPixel(x, y);
+			  bottomPixel = this.getPixel(x, y + 1);
+			  
+			  // get the color average for the two pixels
+			  topAverage = topPixel.getAverage();
+			  bottomAverage = bottomPixel.getAverage();
+			  
+			  // check if absolute value of the difference is less than the amount
+			  if ( Math.abs(topAverage - bottomAverage) < amount)
+			  {
+				  topPixel.setColor(Color.WHITE);
+			  }
+			  else
+			  {
+				  topPixel.setColor(Color.BLACK);
+			  }
+		  }
+	  }
+  }
+  
+  
+  
+  /*
+   * program 38:
+   * Method to change the current picture to a sepia tint, (modify middle colors to a light brown
+   * and the light colors to a light yellow and make the shadows darker)
+   */
+  
+  public void sepiaTint()
+  {
+	  Pixel pixel = null;
+	  double redValue = 0;
+	  double greenValue = 0;
+	  double blueValue = 0;
+	  
+	  // first change the current picture to grayscale, create grayscale method
+	  this.grayscale();
+	  
+	  // loop through pixels
+	  for ( int x = 0; x < this.getWidth(); x++)
+	  {
+		  for ( int y = 0; y < this.getHeight(); y++)
+		  {
+			  // get the current pixel and color value
+			  pixel = this.getPixel(x, y);
+			  redValue = pixel.getRed();
+			  greenValue = pixel.getGreen();
+			  blueValue = pixel.getBlue();
+			  
+			  // tint the shadows darker
+			  if (redValue < 60)
+			  {
+				  redValue = redValue * 0.9;
+				  greenValue = greenValue * 0.9;
+				  blueValue = blueValue * 0.9;
+			  }
+			  
+			  // tint mid-tones a light brown by reducing the blue
+			  else if (redValue < 190)
+			  {
+				  blueValue = blueValue * 0.8;
+			  }
+			  
+			  // tint highlights a light yellow by reducing blue
+			  else 
+			  {
+				  blueValue = blueValue * 0.9;
+			  }
+			  
+			  // set the colors
+			  pixel.setRed((int)(redValue));
+			  pixel.setGreen((int)(greenValue));
+			  pixel.setBlue((int)(blueValue));
+					  
+		  }
+	  }
+  }
+  
+  /*
+   * program 39: posterizing a picture
+   * method to posterize (reduce the number of colors) in
+   * the picture. the number of reds, greens and blues
+   * will be 4
+   */
+  public void posterize()
+  {
+	  Pixel pixel = null;
+	  int redValue = 0;
+	  int greenValue = 0;
+	  int blueValue = 0;
+	  
+	  // loop through the rows of pixels
+	  for ( int x = 0; x < this.getWidth(); x++)
+	  {
+		  // loop through the columns of pixels
+		  for ( int y = 0; y < this.getHeight(); y++)
+		  {
+			  // get current pixel and color
+			  pixel = this.getPixel(x, y);
+			  redValue = pixel.getRed();
+			  greenValue = pixel.getGreen();
+			  blueValue = pixel.getBlue();
+			  
+			  
+			  // check for red color range and change red color
+			  if (redValue < 64)
+			  {
+				  redValue = 31;
+			  }
+			  else if (redValue < 128)
+			  {
+				  redValue = 95;
+			  }
+			  else 
+			  {
+				  redValue = 223;
+			  }
+			  
+			// check for green color range and change green color
+			  if (greenValue < 64)
+			  {
+				  greenValue = 31;
+			  }
+			  else if (greenValue < 128)
+			  {
+				  greenValue = 95;
+			  }
+			  else 
+			  {
+				  greenValue = 223;
+			  }
+			  
+				// check for blue color range and change blue color
+			  if (blueValue < 64)
+			  {
+				  blueValue = 31;
+			  }
+			  else if (blueValue < 128)
+			  {
+				  blueValue = 95;
+			  }
+			  else 
+			  {
+				  blueValue = 223;
+			  }
+			  
+			  // set the colors
+			  pixel.setRed(redValue);
+			  pixel.setGreen(greenValue);
+			  pixel.setBlue(blueValue);
+		  }
+	  }
+  }
+  
+  /*
+   * program 40: posterizing by level
+   * Method to posterize (reduce the number of colors) in the picture
+   * @param numLevels the number of color levels to use
+   * 
+   */
+  
+  public void posterizeLevel(int numLevels)
+  {
+	  Pixel pixel =  null;
+	  int redValue = 0;
+	  int greenValue = 0;
+	  int blueValue = 0;
+	  int increment = (int) (256.0 / numLevels);
+	  int bottomValue, topValue, middleValue = 0;
+	  
+	  // loop through the columns of the pixels
+	  for ( int x = 0; x < this.getWidth(); x++)
+	  {
+		  for ( int y = 0; y < this.getHeight(); y++)
+		  {
+			  // get current pixel and color
+			  pixel = this.getPixel(x, y);
+			  redValue = pixel.getRed();
+			  greenValue = pixel.getGreen();
+			  blueValue = pixel.getBlue();
+			  
+			  // loop through number levels
+			  for ( int i = 0; i < numLevels; i++)
+			  {
+				  // compute the bottom, top, middle values
+				  bottomValue = i * increment;
+				  topValue = (i + 1) * increment;
+				  middleValue = (int) ((bottomValue + topValue - 1) / 2.0);
+				  
+				  // check if current values are in current range and if
+				  // so set them to the middle value
+				  
+				  if ( bottomValue <= redValue && redValue < topValue)
+				  {
+					  pixel.setRed(middleValue);
+				  }
+				  if ( bottomValue <= greenValue && greenValue < topValue)
+				  {
+					  pixel.setGreen(middleValue);
+				  }
+				  if ( bottomValue <= blueValue && greenValue < topValue)
+				  {
+					  pixel.setBlue(middleValue);
+				  }
+			  }
+		  }
+	  }
+  }
+  
+  /*
+   * program 41: highlight extremes
+   * Method to replace the pixel colors in the current picture
+   * object that have a color distance with the passed replacement color
+   * @param replacementColor the new color to use
+   */
+  public void highlightLightAndDark(double amount, Color replacementColor)
+  {
+	  Pixel pixel = null;
+	  
+	  
+	  // loop through all the pixels in the x direction
+	  for ( int x = 0; x < getWidth(); x++)
+	  {
+		  // loop through all the pixels in the y direction
+		  for ( int y = 0; y < getHeight(); y++)
+		  {
+			  // get current pixel
+			  pixel = this.getPixel(x, y);
+			  
+			  // if the distance from white to black is less that the 
+			  //passed amount use the replacement color instead
+			  if ( pixel.colorDistance(Color.white) < amount || 
+					  pixel.colorDistance(Color.black) < amount)
+			  {
+				  pixel.setColor(replacementColor);
+				  
+			  }
+		  }
+	  }
+  }
+  
+  /*
+   * program 42: A Simple Blur
+   * Method to blur pixels
+   * @param numPixels the number of pixels to average in all directions
+   * If the numPixel is 2 then we will average all pixels in the rectangle
+   * defined by 2 before the current pixel to 2 after the current pixel
+   */
+  
+  public void blur(int numPixels)
+  {
+	  Pixel pixel = null;
+	  Pixel samplePixel = null;
+	  int redValue = 0;
+	  int greenValue = 0;
+	  int blueValue = 0;
+	  int count = 0;
+	  
+	  // loop through the columns of the pixels
+	  for ( int x = 0; x < this.getWidth(); x++)
+	  {
+		  //loop through the rows of the pixels
+		  for ( int y = 0; y < this.getHeight(); y++)
+		  {
+			  // get the current pixel
+			  pixel = this.getPixel(x, y);
+			  
+			  // reset the count and red, green, blue values
+			  count = 0;
+			  redValue = greenValue = blueValue = 0;
+			  
+			  // loop through pixel numPixel before x to numPixel after x
+			  for ( int xSample = x - numPixels; xSample <= x + numPixels; xSample++)
+			  {
+				  for ( int ySample = y - numPixels; ySample <= y + numPixels; ySample++)
+				  {
+					  // check if we are in range of acceptable pixels
+					  if (xSample >= 0 && xSample < this.getWidth() && ySample >= 0 && ySample < this.getHeight())
+					  {
+						  samplePixel = this.getPixel(xSample, ySample);
+						  redValue = redValue + samplePixel.getRed();
+						  greenValue = greenValue + samplePixel.getGreen();
+						  blueValue = blueValue + samplePixel.getBlue();
+						  count = count + 1;
+					  }
+				  }
+			  }
+			  
+			  // use average color of surrounding pixels
+			  Color newColor = new Color(redValue / count, greenValue / count, blueValue / count);
+			  pixel.setColor(newColor);
+			  
+		  }
+	  }
+	  
+  }
+  
+  /*
+   * Program 43: subtract the background and replace itwith a new one
+   * 
+   * Method to replce the background from the current picture
+   * with the background from another picture
+   * @param oldBackground a picture with the old background
+   * @param newBackground a picture with the new background
+   */
+  public void swapBackground(Picture oldBackground, Picture newBackground)
+  {
+	  Pixel currPixel = null;
+	  Pixel oldPixel = null;
+	  Pixel newPixel = null;
+	  
+	  // loop through the columns
+	  for ( int x = 0; x < this.getWidth(); x++)
+	  {
+		  for ( int y = 0; y < this.getHeight(); y++)
+		  {
+			  // get the current pixel
+			  currPixel = this.getPixel(x, y);
+			  oldPixel = oldBackground.getPixel(x, y);
+			  
+			  // if the distance between the current pixel color and the old background
+			  // pixel color is less than 15 then swap in the new background
+			  
+			  if ( currPixel.colorDistance(oldPixel.getColor()) < 15.0 )
+			  {
+				  newPixel = newBackground.getPixel(x, y);
+				  currPixel.setColor(newPixel.getColor());
+			  }
+			  
+		  }
+	  }
+  }
+  
+  /*
+   * program 45: Chromakey: replace all blue with the new background
+   */
+  
+  public void chromakey(Picture newBg)
+  {
+	  Pixel currPixel = null;
+	  Pixel newPixel = null;
+	  int x,y;
+	  
+	  // loop through columns
+	  for (  x = 0; x < this.getWidth(); x++ );
+	  {
+		  // loop through rows
+		  for (  y = 0; y < this.getHeight(); y++ );
+		  {
+			// get current pixel
+			  currPixel = this.getPixel(x,y);
+			  
+			  /*
+			   * If the color at the current pixel is mostly blue (blue value is greater than red & green
+			   * value combined), then use new background color
+			   */
+			  if ( currPixel.getRed() + currPixel.getGreen() < currPixel.getBlue())
+			  {
+				  newPixel = newBg.getPixel(x, y);
+				  currPixel.setColor(newPixel.getColor());
+			  }
+		  }
+	  }
+  }
+  
+  
+  /***********************************************************************
    * Method to return a string with information about this picture.
    * @return a string with information about the picture such as fileName,
    * height and width.
@@ -327,20 +935,76 @@ public class Picture extends SimplePicture
  
   public static void main(String[] args) 
   {
+	  
+	  System.out.println("blank");
+	  
+	  //String sourceFile = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/KatieFancy.jpg";
+	  
+	  
+	  String fileName = FileChooser.getMediaPath("blue-mark.jpg");
+	  Picture mark = new Picture(fileName);
+	  fileName = FileChooser.getMediaPath("moon-surface.jpg");
+	  Picture newBg = new Picture(fileName);
+	  mark.chromakey(newBg);
+	  mark.explore();
+	  mark = new Picture(FileChooser.getMediaPath("blue-mark.jpg"));
+	  newBg = new Picture(FileChooser.getMediaPath("beach.jpg"));
+	  mark.explore();
 
+	  
+	  
+	  
+	  
+	  /*
+	  // program 43:
+	  
+	  String fileName = FileChooser.getMediaPath("kid-in-frame.jpg");
+	  Picture p = new Picture(fileName);
+	  
+	  fileName = FileChooser.getMediaPath("bgframe.jpg");
+	  Picture oldBg = new Picture(fileName);
+	  
+	  fileName = FileChooser.getMediaPath("moon-surface.jpg");
+	  Picture newBg = new Picture(fileName);
+	  p.swapBackground(oldBg, newBg);		// program 43
+	  p.show();
+	  
+	  */
+	  
+	  /*
+	  String sourceFile = FileChooser.getMediaPath("kid-in-frame.jpg");
+	  System.out.println(sourceFile);
+	  Picture picObject =  new Picture(sourceFile);
+
+	  //picObject.show();
+	  picObject.blur(20);	// program 42 : this takes a while, be patience
+	  picObject.explore();
+	  */
+	  //picObject.turnBrowntoRedInRectangleDimensions(109,91,190,107,20); // program: 35
+	  //picObject.explore();
+	  
+	  
+	  
+	  
+	  // ----------------------scribble notes below here------------------------
+	  //picObject.copyPictureLarger();
+	  
+	  
+	  
 	 
-     
+     /*
 	 //String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/temple.jpg";
 	 //String fileName = FileChooser.getMediaPath("7inX95in.jpg");
      //String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/7inX95in.jpg";
 	 
-	  String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/katie.jpg";
-	  System.out.println(fileName);
-	  Picture picFile = new Picture(fileName);
-	  System.out.println(picFile);
-	  picFile.copyJakitaSmaller();	// program 30
+	 // String fileName = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/caterpillar.jpg"; //FileChooser.getMediaPath("rose.jpg");
+	  															
+	 // System.out.println(fileName);
+	  Picture picFile = new Picture();
+	 // System.out.println(picFile);
+	  picFile.copyPictureSmaller();	// program 30
 	  picFile.show();
-	  
+	  */
 	  
 	  
 	  /*
@@ -369,8 +1033,19 @@ public class Picture extends SimplePicture
      pictObj.mirrorTemple();		// program 22
      pictObj.copyKatie();		// program 23
      pictObj.copyKatiesFace();		// program 25
-     picFile.copyJakitaSmaller();	// program 30
-
+     picFile.copyPictureSmaller();	// program 30
+     picObject.copyPictureLarger();	// program 31
+     picObject.adjustRedWhileLoop(10);
+     picObject.turnBrownIntoRed();	// program 33
+	 picObject.turnBrownToRedInRectangle();	// program 34
+	 picObject.turnBrowntoRedInRectangleDimensions(109,91,190,107,20); // program: 35
+	 picObject.removeRedEye(109, 91, 202, 107, java.awt.Color.black);	// program: 36
+	 picObject.edgeDetection(10);	// program: 37
+	 picObject.posterize();	// program 39
+	 picObject.posterizeLevel(3);	// program 40
+	 picObject.highlightLightAndDark(50.0, java.awt.Color.yellow);	// program 41
+	 picObject.blur(20);	// program 42 : this takes a while, be patience
+	   p.swapBackground(oldBg, newBg);		// program 43
      pictObj.explore();
      */
      
