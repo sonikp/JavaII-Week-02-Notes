@@ -1,9 +1,10 @@
 import java.util.*;
 import java.awt.*;
 
+
 /*
  * Turtle.java
- * Michael Floerchinger
+ * Modified by Michael Floerchinger
  * Assignment Week 02
  */
 
@@ -67,23 +68,37 @@ public class Turtle extends SimpleTurtle
   
   public void draw()
   {
-	  this.forward(100);
+	  // class turtle method draw = square
+	  this.forward(50);
 	  this.turnRight();
-	  this.forward(100);
+	  this.forward(50);
 	  this.turnRight();
-	  this.forward(100);
+	  this.forward(50);
 	  this.turnRight();
-	  this.forward(100);
-	  this.turnLeft();
+	  this.forward(50);
+	  this.turnRight();
   }
   
   public void draw(Color color)	// overloaded method, same method name different inputs
   {
 	  this.penUp();
-	  this.moveTo(60, 80);
+	  this.moveTo(40, 420);
 	  this.penDown();
 	  this.setPenColor(color);
-	  this.forward(200);
+	  
+
+	  // draw pentagon
+	  this.forward(70);
+	  this.turn(72);
+	  this.forward(70);
+	  this.turn(72);
+	  this.forward(70);
+	  this.turn(72);
+	  this.forward(70);
+	  this.turn(72);
+	  this.forward(70);
+	  this.turn(72);
+	
 	  
   }
   
@@ -99,61 +114,58 @@ public class Turtle extends SimpleTurtle
 
   }
 
-  /*
-  Week 02 Assignment notes:
-  
-  Need methods:
-  draw()				- draw shape of my choosing, created in turtle.java, but overwritten in subclasses
-  draw(Color color) 	- draw shape of my choosing, must remain in the turtle.java class
-  
-  Create subclasses:
-  SpiralTurtle	-	overwrite draw() method, draw a spiral
-  ConfusedTurtle	-	overwrite draw() method, draw a erratic pattern of random sized segments drawn in chaotic directions
-  SmartTurtle		- overwrite draw() method, draw a "design" of your own choosing
-  
-  Create:
-  BaleOfTurtles.java class, with the main method. Will perform:
-  Create world
-  Initialize array of three turtles, with reference to Spiral, Confused, Smart, all turtles must be in current world
-  Create a color object, choose color
-  Iterate through TurtleArray, call draw(Color color) using each Turtle reference within the Array
-  */
+  public void createTurtlesWithArray()
+  {
+	  
+	  /*
+	   * Need to figure out how to call the world object pond from the
+	   * main method
+	   * 
+	   * INCOMPLETE
+	   */
+	  
+	  
+	  /*
+	  // secure random number generator
+	  SecureRandom randomNumbers = new SecureRandom();
+
+	  // relocate
+	  this.moveTo(30,40);
+	  this.forward(1);
+
+	  Turtle[] turtleArray = new Turtle[10];
+		// create many turtles
+		for ( int i = 0; i < 10; i++)
+		{
+			turtleArray[i] = new Turtle(pond);
+			// random locations
+			for ( int j = 0; j < 10; j++)
+			{
+				turtleArray[i].turn((int) (360 * randomNumbers.nextInt(100)));
+				turtleArray[i].forward(20);
+			}
+		}
+		*/
+  }
   
 
   public static void main(String[] args)
   {
-    /*
+    
+    // not used left these notes for myself
+	
+	/*
 	World pond = new World();
+    
     Turtle turtle = new Turtle(pond);
-    System.out.println("New Turtle Assignment \n");
-    */
-	  
-    /*
-    // Section 1: create local methods draw() & spiral()
-    turtle.setColor(Color.red);
-    turtle.setPenColor(Color.green);
-    turtle.spiral();
-    */
-    /*
-    // Create 3 subclasses
-    SpiralTurtle newSpiral = new SpiralTurtle();
-    newSpiral.spiralDoStuff();
-    newSpiral.draw();
+    turtle.backward(100);
+    System.out.println(turtle);
     
-    ConfusedTurtle newConfused = new ConfusedTurtle();
-    newConfused.confusedDoStuff();
-    newConfused.draw();
-    
-    SmartTurtle newSmart =new SmartTurtle();
-    newSmart.smartDoStuff();
-    newSmart.draw();
-    */
-    
-    /*
-    turtle.forward();
-    turtle.draw();					// task 1 complete
-    turtle.draw(Color.blue);		// task 2 complete
-    */
+    ConfusedTurtle confused = new ConfusedTurtle(pond);
+    confused.forward(10);
+    System.out.println(confused);
+	*/
+	
   }
 
 } // this } is the end of class Turtle, put all new methods before this
