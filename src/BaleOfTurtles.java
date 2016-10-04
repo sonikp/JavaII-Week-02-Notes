@@ -47,6 +47,14 @@ public class BaleOfTurtles
 		// Create world object 
 		World pond = new World();
 		
+		//Per assignment instructions, ' Initialized Array of three Turtles '
+		World world = new World(640,480);
+		Turtle[] myTurtle = new Turtle[3];
+		myTurtle[0] = new ConfusedTurtle(world);
+		myTurtle[1] = new SmartTurtle(world);
+		myTurtle[2] = new SpiralTurtle(world);
+		
+		
 		// Create turtle object
 		Turtle turtle = new Turtle(pond);
 		turtle.turn(45);
