@@ -355,6 +355,47 @@ public class Picture extends SimplePicture
   }
   
   /*
+   * Program 26: Creating a Collage by copying Flowers
+   * 
+   * Method to copy flower pictures to create a collage. All the flower pictures will be lined up near
+   * the bottom of the current picture (5 pixels from the bottom)
+   */
+  
+  public void copyFlowers()
+  {
+	  // create the flower pictures
+	  Picture flower1Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower1.jpg");
+	  System.out.println(flower1Picture);
+	  Picture flower2Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower2.jpg");
+	  
+	  // declare the source and target pixel variables
+	  Pixel sourcePixel = null;
+	  Pixel targetPixel = null;
+	  
+	  // save the height of the two pictures
+	  int flower1Height = flower1Picture.getHeight();
+	  int flower2Height = flower2Picture.getHeight();
+	  flower1Picture.show();
+	  flower2Picture.show();
+	  
+	  // copy the first flower picture to 5 pixels from the bottom left corner of the current picture
+	  for ( int sourceX = 0, targetX = 0; sourceX < flower1Picture.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = 0; sourceY < flower1Picture.getHeight(); sourceY++, targetY++)
+		  {
+			  sourcePixel = flower1Picture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  //flower1Picture.explore();
+	  //flower2Picture.explore();
+	  
+	  // copy the clower2 picture starting with x = 100;
+  }
+  
+  
+  /*
    * Program 30: Scaling down a picture (Smaller)
    * 
    */
@@ -544,13 +585,54 @@ public class Picture extends SimplePicture
 	  Pixel bottomPixel = null;
 	  double topAverage = 0.0;
 	  double bottomAverage = 0.0;
-	  int endY = this.getHeight() -1;
+	  int endY = this.getHeight() - 1;
 	  
-	  // loop through y values from 0 to height -1, (since compare to below pixel
+	  // loop through y values from 0 to height - 1, (since compare to below pixel)
 	  for ( int y = 0; y < endY; y++)
 	  {
 		  // loop through the x values from 0 to width
 		  for ( int x = 0; x < this.getWidth(); x++)
+		  {
+			  // get the top and bottom pixels
+			  topPixel = this.getPixel(x, y);
+			  bottomPixel = this.getPixel(x, y + 1);
+			  
+			  // get the color average for the two pixels
+			  topAverage = topPixel.getAverage();
+			  bottomAverage = bottomPixel.getAverage();
+			  
+			  // check if absolute value of the difference is less than the amount
+			  if ( Math.abs(topAverage - bottomAverage) < amount)
+			  {
+				  topPixel.setColor(Color.WHITE);
+			  }
+			  else
+			  {
+				  topPixel.setColor(Color.BLACK);
+			  }
+		  }
+	  }
+  }
+  
+  
+  public void edgeDetectionRange(double amount)
+  {
+	  Pixel topPixel = null;
+	  Pixel bottomPixel = null;
+	  double topAverage = 0.0;
+	  double bottomAverage = 0.0;
+	  int endY = this.getHeight() - 1;	// now unused
+	  // problem 6.3, limit edge detection
+	  int yStart = (this.getWidth() / 4);
+	  int yEnd = ((this.getWidth() / 4) * 3);
+	  int xStart = (this.getHeight() / 4);
+	  int xEnd = ((this.getHeight() / 4) * 3);
+	  
+	  // loop through y values from 0 to height - 1, (since compare to below pixel)
+	  for ( int y = yStart; y < yEnd; y++)	// int y = (0 + ((int)0.25 * endY)); y < (endY * (int) 0.75); y++
+	  {
+		  // loop through the x values from 0 to width
+		  for ( int x = xStart; x < xEnd; x++)
 		  {
 			  // get the top and bottom pixels
 			  topPixel = this.getPixel(x, y);
@@ -630,6 +712,67 @@ public class Picture extends SimplePicture
 		  }
 	  }
   }
+  
+  /*
+   * Problem 6.4 within a range
+   */
+  
+  public void sepiaTintRange()
+  {
+	  Pixel pixel = null;
+	  double redValue = 0;
+	  double greenValue = 0;
+	  double blueValue = 0;
+	  // problem 6.3, limit edge detection
+	  int yStart = (this.getWidth() / 4);
+	  int yEnd = ((this.getWidth() / 4) * 3);
+	  int xStart = (this.getHeight() / 4);
+	  int xEnd = ((this.getHeight() / 4) * 3);
+	  
+	  // first change the current picture to grayscale, create grayscale method
+	  this.grayscale();
+	  
+	  // loop through pixels
+	  for ( int x = xStart; x < xEnd; x++)
+	  {
+		  for ( int y = yStart; y < yEnd; y++)
+		  {
+			  // get the current pixel and color value
+			  pixel = this.getPixel(x, y);
+			  redValue = pixel.getRed();
+			  greenValue = pixel.getGreen();
+			  blueValue = pixel.getBlue();
+			  
+			  // tint the shadows darker
+			  if (redValue < 60)
+			  {
+				  redValue = redValue * 0.9;
+				  greenValue = greenValue * 0.9;
+				  blueValue = blueValue * 0.9;
+			  }
+			  
+			  // tint mid-tones a light brown by reducing the blue
+			  else if (redValue < 190)
+			  {
+				  blueValue = blueValue * 0.8;
+			  }
+			  
+			  // tint highlights a light yellow by reducing blue
+			  else 
+			  {
+				  blueValue = blueValue * 0.9;
+			  }
+			  
+			  // set the colors
+			  pixel.setRed((int)(redValue));
+			  pixel.setGreen((int)(greenValue));
+			  pixel.setBlue((int)(blueValue));
+					  
+		  }
+	  }
+  }
+  
+  
   
   /*
    * program 39: posterizing a picture
@@ -897,10 +1040,10 @@ public class Picture extends SimplePicture
 	  int x,y;
 	  
 	  // loop through columns
-	  for (  x = 0; x < this.getWidth(); x++ );
+	  for (  x = 0; x < this.getWidth() - 1; x++ );
 	  {
 		  // loop through rows
-		  for (  y = 0; y < this.getHeight(); y++ );
+		  for (  y = 0; y < this.getHeight() - 1; y++ );
 		  {
 			// get current pixel
 			  currPixel = this.getPixel(x,y);
@@ -916,6 +1059,37 @@ public class Picture extends SimplePicture
 			  }
 		  }
 	  }
+  }
+  
+  /*
+   * program 45: edited for problem 6.2
+   * 
+   */
+  
+  public void chromakeyProblemExercise(Picture newBg)
+  {
+	  Pixel currentPixel = null;
+	  Pixel newPixel =  null;
+	  
+	  // loop through current columns
+	  for ( int x = 0; x < this.getWidth() - 1; x++)
+	  {
+		  // loop through current rows
+		  for ( int y = 0; y < this.getHeight() - 1; y++)
+		  {
+			  // get current pixel
+			  currentPixel = this.getPixel(x, y);
+			  //if ( currentPixel.getRed() + currentPixel.getGreen() < currentPixel.getBlue())	// r = 155 - 190 
+			  
+			  if ( currentPixel.getRed() + currentPixel.getGreen() < currentPixel.getBlue() )				// (currentPixel.getRed() >= 155 && currentPixel.getRed() >= 190) && (currentPixel.getBlue() >= 200 && currentPixel.getBlue() >= 230)
+			  {
+				  newPixel = newBg.getPixel(x, y);
+				  currentPixel.setColor(newPixel.getColor());
+			  }
+			  
+		  }
+	  }
+	 
   }
   
   
@@ -938,18 +1112,40 @@ public class Picture extends SimplePicture
 	  
 	  System.out.println("blank");
 	  
+	  // @Lnx
 	  //String sourceFile = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/KatieFancy.jpg";
+	  // @MAC
+	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/blue-mark.jpg";
+	
 	  
+	  Picture p = new Picture();
+	  p.copyFlowers();
 	  
-	  String fileName = FileChooser.getMediaPath("blue-mark.jpg");
-	  Picture mark = new Picture(fileName);
-	  fileName = FileChooser.getMediaPath("moon-surface.jpg");
-	  Picture newBg = new Picture(fileName);
+	  /*
+	  String fileName =  "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/butterfly1.jpg";
+	  Picture p = new Picture(fileName);
+	  System.out.println(p);
+	  p.explore();
+	  p.sepiaTintRange();
+	  p.explore();
+	  */
+	  
+	  // homework for 6.2 didn't work
+	  /*
+	  // get the clock face
+	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/clock-tower.jpg";
+	  Picture mark = new Picture(sourceFile);
+	  //mark.explore();
+	  
+	  // replace with Marks face
+	  sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/blue-mark.jpg";
+	  Picture newBg = new Picture(sourceFile);
+	  //newBg.explore();
 	  mark.chromakey(newBg);
-	  mark.explore();
-	  mark = new Picture(FileChooser.getMediaPath("blue-mark.jpg"));
-	  newBg = new Picture(FileChooser.getMediaPath("beach.jpg"));
-	  mark.explore();
+	  newBg.explore();
+	  */
+	  
+	  
 
 	  
 	  
