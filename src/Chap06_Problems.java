@@ -52,6 +52,8 @@ public class Chap06_Problems
 		
 		// 6.2, implemented as method in Picture.java as chromakeyProblemExercise() FAILED
 		// 6.3 Completed, implemented as edgeDetectionRange(double amount)
+		// 6.4 Completed
+		// 6.5 
 		
 		
 		

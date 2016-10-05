@@ -114,6 +114,136 @@ public class Picture extends SimplePicture
   }
   
   /*
+   * program 5: Decrease the Amount of Red in a Picture by 50%
+   * 
+   * A method to decrease the red by half in the current picture
+   */
+  public void decreaseRed()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int value = 0;
+	  int index = 0;
+	  /*
+	  // Show all pixels
+	  for (Pixel showValue : pixelArray) 
+	  {
+		    System.out.println(showValue);
+	  }
+	  */
+	  
+	  // loop through all pixels
+	  while ( index < pixelArray.length)
+	  {
+		  // get the current pixel
+		 pixel = pixelArray[index];
+		 
+		 // get the value
+		 value = pixel.getRed();
+		 
+		 // decrease value by 50%
+		 value = value * (int)0.5;
+		 
+		 // set pixel value
+		 pixel.setRed(value);
+		 
+		 // increment counter by 1
+		 index++;
+	  }
+  }
+  
+  /*
+   * program 6: Increase the Amount of Red in a Picture by 30%
+   * 
+   * A method to increase the red by half in the current picture
+   */
+  public void increaseRed()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int value = 0;
+	  int index = 0;
+	  /*
+	  // Show all pixels
+	  for (Pixel showValue : pixelArray) 
+	  {
+		    System.out.println(showValue);
+	  }
+	  */
+	  
+	  // loop through all pixels
+	  while ( index < pixelArray.length)
+	  {
+		  // get the current pixel
+		 pixel = pixelArray[index];
+		 
+		 // get the value
+		 value = pixel.getRed();
+		 
+		 // decrease value by 50%
+		 value = (int)(value * 1.3);
+		 
+		 // set pixel value
+		 pixel.setRed(value);
+		 
+		 // increment counter by 1
+		 index++;
+	  }
+  }
+  
+  /*
+   * Program 7: Clear the blue component from the picture (set the blue to 0)
+   */
+  public void clearBlue()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int value = 0;
+	  int index = 0;
+	  
+	  // loop through pixels
+	  while ( index < pixelArray.length )
+	  {
+		  // get current pixel
+		  pixel = pixelArray[index];
+		  
+		  //set blue
+		  pixel.setBlue(0);
+			
+		  // increment counter
+		  index++;
+				  
+	  }
+  }
+  
+  /*
+   * Program 15: Create the Negative of the Original Picture
+   * method to negate the picture
+   */
+  
+  public void negate()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int redValue, blueValue, greenValue = 0;
+	  
+	  // loop through all pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get the current pixel
+		  pixel = pixelArray[i];
+		  
+		  // get the current red, green, blue values
+		  redValue = pixel.getRed();
+		  greenValue = pixel.getGreen();
+		  blueValue = pixel.getBlue();
+		  
+		  // set the pixel;s color to the new value
+		  pixel.setColor(new Color(255 - redValue, 255 - greenValue, 255 - blueValue));
+	  }
+  }
+  
+  /*
    * Program 16: grayscale 
    *  incidental method that did not appear in the book
    * for some reason
@@ -364,9 +494,15 @@ public class Picture extends SimplePicture
   public void copyFlowers()
   {
 	  // create the flower pictures
-	  Picture flower1Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower1.jpg");
-	  System.out.println(flower1Picture);
-	  Picture flower2Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower2.jpg");
+	  //Picture flower1Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower1.jpg");
+	  //Picture flower2Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower2.jpg");
+	  Picture flower1Picture = new Picture(FileChooser.getMediaPath("flower1.jpg"));
+	  Picture flower2Picture = new Picture(FileChooser.getMediaPath("flower2.jpg"));
+	  
+	  
+	  //System.out.println(flower1Picture);
+	  //System.out.println(flower2Picture);
+	  
 	  
 	  // declare the source and target pixel variables
 	  Pixel sourcePixel = null;
@@ -375,13 +511,15 @@ public class Picture extends SimplePicture
 	  // save the height of the two pictures
 	  int flower1Height = flower1Picture.getHeight();
 	  int flower2Height = flower2Picture.getHeight();
-	  flower1Picture.show();
-	  flower2Picture.show();
+	  
+	  //flower1Picture.show();
+	  //flower2Picture.show();
+	  
 	  
 	  // copy the first flower picture to 5 pixels from the bottom left corner of the current picture
 	  for ( int sourceX = 0, targetX = 0; sourceX < flower1Picture.getWidth(); sourceX++, targetX++)
 	  {
-		  for ( int sourceY = 0, targetY = 0; sourceY < flower1Picture.getHeight(); sourceY++, targetY++)
+		  for ( int sourceY = 0, targetY = 0; sourceY < flower1Picture.getHeight() - 5; sourceY++, targetY++)
 		  {
 			  sourcePixel = flower1Picture.getPixel(sourceX, sourceY);
 			  targetPixel = this.getPixel(targetX, targetY);
@@ -391,9 +529,59 @@ public class Picture extends SimplePicture
 	  //flower1Picture.explore();
 	  //flower2Picture.explore();
 	  
-	  // copy the clower2 picture starting with x = 100;
+	  // copy the flower2 picture starting with x = 100;
+	  for ( int sourceX = 0, targetX = 100; sourceX < flower2Picture.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = this.getHeight() - flower2Height - 5; sourceY < flower2Picture.getHeight(); 
+				  sourceY++, targetY++)
+		  {
+			  sourcePixel = flower2Picture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+		 
+	  // copy the flower1 negated to x = 200;
+	  flower1Picture.negate();
+	  for ( int sourceX = 0, targetX = 200; sourceX < flower1Picture.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = this.getHeight() - flower1Height - 5; sourceY < flower1Picture.getHeight(); 
+				  sourceY++, targetY++)
+		  {
+			  sourcePixel = flower1Picture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  
+	  // clear blue in flower2 to x = 300;
+	  flower2Picture.clearBlue();
+	  for ( int sourceX = 0, targetX = 300; sourceX < flower2Picture.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = this.getHeight() - flower2Height - 5; sourceY < flower1Picture.getHeight(); 
+				  sourceY++, targetY++)
+		  {
+			  sourcePixel = flower2Picture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  
+	  
+	// copy negated flower 1 to x=400;
+	  
+	  for ( int sourceX = 0, targetX = 400; sourceX < flower1Picture.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = this.getHeight() - flower2Height - 5; sourceY < flower1Picture.getHeight(); 
+				  sourceY++, targetY++)
+		  {
+			  sourcePixel = flower1Picture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+	  
   }
-  
   
   /*
    * Program 30: Scaling down a picture (Smaller)
@@ -1116,13 +1304,30 @@ public class Picture extends SimplePicture
 	  //String sourceFile = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/KatieFancy.jpg";
 	  // @MAC
 	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/blue-mark.jpg";
-	
+	  /*
+	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture p = new Picture(fileName);
+	  p.clearBlue();
+	  p.explore();
+	  p.increaseRed();
+	  p.explore();
+	  */
 	  
-	  Picture p = new Picture();
-	  p.copyFlowers();
+	  
+	  String fileName = FileChooser.getMediaPath("7inX95in.jpg");
+	  //String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture targetPicture = new Picture(fileName);
+	  targetPicture.copyFlowers();
+	  //targetPicture.negate();
+	  targetPicture.show();
+	  
+	  //Picture p = new Picture();
+	  //p.copyFlowers();
+	  
 	  
 	  /*
-	  String fileName =  "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/butterfly1.jpg";
+	  //String fileName =  "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/butterfly1.jpg";
+	  String fileName = FileChooser.getMediaPath("butterfly1.jpg");
 	  Picture p = new Picture(fileName);
 	  System.out.println(p);
 	  p.explore();
@@ -1130,16 +1335,21 @@ public class Picture extends SimplePicture
 	  p.explore();
 	  */
 	  
-	  // homework for 6.2 didn't work
+	  
+	  
 	  /*
+	  // homework for 6.2 didn't work
+	  
 	  // get the clock face
-	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/clock-tower.jpg";
-	  Picture mark = new Picture(sourceFile);
+	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/clock-tower.jpg";
+	  String fileName = FileChooser.getMediaPath("blue-mark.jpg");
+	  Picture mark = new Picture(fileName);
 	  //mark.explore();
 	  
 	  // replace with Marks face
-	  sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/blue-mark.jpg";
-	  Picture newBg = new Picture(sourceFile);
+	  //sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/blue-mark.jpg";
+	  fileName = FileChooser.getMediaPath("moon-surface.jpg");
+	  Picture newBg = new Picture(fileName);
 	  //newBg.explore();
 	  mark.chromakey(newBg);
 	  newBg.explore();
