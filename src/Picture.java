@@ -153,6 +153,34 @@ public class Picture extends SimplePicture
   }
   
   /*
+   * Problem 4.5 reduce the redness by 10% and again by 20%
+   */
+  public void reduceRedness(int inputNum)
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int value = 0;
+	  int index = 0;
+	  double reductionAmount = 1 - ((double)inputNum / 100);
+	  System.out.println(reductionAmount);
+	  
+	  // loop through all the pixels using a while loop
+	  while (index < pixelArray.length)
+	  {
+		  // get the current pixel
+		  pixel = pixelArray[index];
+		  
+		  // get color value
+		  value = pixel.getRed();
+
+		  //reduce redness by selected % amount
+		  pixel.setRed((int)(value * reductionAmount));
+
+		  index++;
+	  }
+  }
+  
+  /*
    * program 6: Increase the Amount of Red in a Picture by 30%
    * 
    * A method to increase the red by half in the current picture
@@ -190,6 +218,53 @@ public class Picture extends SimplePicture
 		 index++;
 	  }
   }
+  // Chapter 04 - Problem 4.6
+  public void increaseRed2()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  int value = 0;
+	
+	  // loop through the pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get the current pixel
+		 value = pixelArray[i].getRed();
+		 
+		 // set red 1.3 * what it was
+		 pixelArray[i].setRed((int)(value * 1.3));
+
+	  }
+  }
+  
+//Chapter 04 - Problem 4.6
+ public void increaseRed3()
+ {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int red = 0;
+	  int green = 0;
+	  int blue = 0;
+	  int newRed = 0;
+
+	  // loop through all pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get the current pixel
+		 pixel = pixelArray[i];
+		 
+		 // get the color values
+		 red = pixel.getRed();
+		 green = pixel.getGreen();
+		 blue = pixel.getBlue();
+
+		 // calculate new red
+		 newRed = (int)(red * 1.3);
+		 
+		 // set pixel value
+		 pixel.setColor(new Color(newRed, green, blue));
+
+	  }
+ }
   
   /*
    * Program 7: Clear the blue component from the picture (set the blue to 0)
@@ -198,7 +273,6 @@ public class Picture extends SimplePicture
   {
 	  Pixel[] pixelArray = this.getPixels();
 	  Pixel pixel = null;
-	  int value = 0;
 	  int index = 0;
 	  
 	  // loop through pixels
@@ -215,6 +289,96 @@ public class Picture extends SimplePicture
 				  
 	  }
   }
+  
+//-------------Chapter 04 Problem 4.9------------- 
+  public void clearRed()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  
+	  // loop through the pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get color array
+		  pixel = pixelArray[i];		
+		  
+		  // clear red
+		  pixel.setRed(0);
+		 
+	  }
+  }
+  
+//-------------Chapter 04 Problem 4.9------------- 
+  public void clearGreen()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  
+	  // loop through the pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get color array
+		  pixel = pixelArray[i];		
+		  
+		  // clear red
+		  pixel.setGreen(0);
+		 
+	  }
+  }
+  
+//-------------Chapter 04 Problem 4.10------------- 
+  public void keepGreen()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int red = 0;
+	  int green = 0;
+	  int blue = 0;
+	  
+	  // loop through the pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get pixels & values
+		  pixel = pixelArray[i];
+		  System.out.print(pixel + "  \t");
+		  
+		  // get green color
+		  green = pixel.getGreen();
+		  
+		  // reset all colors & keep green
+		  pixel.setColor(new Color(red, green, blue));
+		  System.out.print(pixel + "  \n");
+		  
+	  }
+  }
+  
+//-------------Chapter 04 Problem 4.1------------- 
+  public void maximizeBlue()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int red = 0;
+	  int green = 0;
+	  int blue = 255;
+	  
+	  // loop through the pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get pixels & values
+		  pixel = pixelArray[i];
+		  System.out.print(pixel + "  \t");
+		  
+		  // get green color
+		  green = pixel.getGreen();
+		  
+		  // reset all colors & keep green
+		  pixel.setColor(new Color(red, green, blue));
+		  System.out.print(pixel + "  \n");
+		  
+	  }
+  }
+  
+  
   
   /*
    * Program 15: Create the Negative of the Original Picture
@@ -581,6 +745,67 @@ public class Picture extends SimplePicture
 		  }
 	  }
 	  
+  }
+  
+  
+  /*
+   *Program 27: General Copy Method
+   *
+   * Method that will copy all of the passsed source picture into the current picture object starting with the
+   * upper LH corner given by startX It will put the sourcePicture at 5 pixels from the bottom of this picture
+   * @param sourcePicture: the picture object to copy
+   * @param xStart: the x position to start the copy in the target
+   */
+  
+  public void copyPictureTo(Picture sourcePicture, int xStart)
+  {
+	  Pixel sourcePixel = null;
+	  Pixel targetPixel = null;
+	  
+	  // loop through the columns
+	  for ( int sourceX = 0, targetX = xStart; sourceX < sourcePicture.getWidth(); sourceX++, targetX++)
+	  {
+		  // loop through the rows
+		  for ( int sourceY = 0, targetY = this.getHeight() - sourcePicture.getHeight() - 5; 
+				  sourceY < sourcePicture.getHeight(); sourceY++, targetY++)
+		  {
+			  sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX,  targetY);
+			  targetPixel.setColor(sourcePixel.getColor());
+		  }
+	  }
+  }
+  
+  /*
+   * Method to copy two flowers in a pattern to the bottom (5 pixels from the bottom) of the current picture
+   */
+  public void copyFlowersBetter()
+  {
+	  // create the flower pictures
+	  //Picture flower1Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower1.jpg");
+	  //Picture flower2Picture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower2.jpg");
+	  Picture flower1Picture = new Picture(FileChooser.getMediaPath("flower1.jpg"));
+	  Picture flower2Picture = new Picture(FileChooser.getMediaPath("flower2.jpg"));
+	  
+	  // copy the first flower picture to near the bottom LH corner of the canvas
+	  this.copyPictureTo(flower1Picture, 0); 
+	  
+	  /*
+	   * copy the flower2 picture starting with x = 100 in the canvas
+	   */
+	 
+	  // copy the flower1 negated to x=200 in the canvas
+	  flower1Picture.negate();
+	  this.copyPictureTo(flower1Picture,200);
+	  
+	  /*
+	   * clear te blue in flower 2 picture and add at x = 300 in the canvas
+	   */
+	  flower2Picture.clearBlue();
+	  this.copyPictureTo(flower2Picture, 300);
+	  
+	  // copy the negated flower 1 to x = 400
+	  this.copyPictureTo(flower1Picture, 400);
   }
   
   /*
@@ -1313,17 +1538,67 @@ public class Picture extends SimplePicture
 	  p.explore();
 	  */
 	  
+	// -------------Chapter 04 Problem 4.10-------------
+	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  //sourcePicture.keepGreen();	// clearRed(), clearGreen(), clearBlue()
+	  sourcePicture.keepColor(green);	// clearRed(), clearGreen(), clearBlue()
+	  sourcePicture.explore();
+	  // ----END---------Chapter 04 Problem 4.10-------------
 	  
+	  
+	  
+	  /*
+	  // -------------Chapter 04 Problem 4.9-------------
+	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.clearBlue();	// clearRed(), clearGreen(), clearBlue()
+	  sourcePicture.explore();
+	  // ----END---------Chapter 04 Problem 4.9-------------
+	  */
+		  
+	  /*
+	  // -------------Chapter 04 Problem 4.7-------------
+	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.increaseRed();	// increaseRed2(), or increaseRed3()
+	  sourcePicture.explore();
+	  // ----END---------Chapter 04 Problem 4.7-------------
+	  */
+	  
+	  
+	  /*
+	  // -------------Chapter 04 Problem 4.5-------------
+	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.reduceRedness(15);	// insert the amount of reduction 10 or 20
+	  sourcePicture.explore();
+	  // ----END---------Chapter 04 Problem 4.5-------------
+	  */
+	  
+	  // ------------------------------------Below this line is junk-------------------------
+	  
+	  
+	  /*
 	  String fileName = FileChooser.getMediaPath("7inX95in.jpg");
 	  //String fileName = FileChooser.getMediaPath("caterpillar.jpg");
 	  Picture targetPicture = new Picture(fileName);
-	  targetPicture.copyFlowers();
+	  
+	  targetPicture.copyFlowersBetter();// targetPicture.copyFlowers();
 	  //targetPicture.negate();
 	  targetPicture.show();
 	  
 	  //Picture p = new Picture();
 	  //p.copyFlowers();
-	  
+	  */
 	  
 	  /*
 	  //String fileName =  "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/butterfly1.jpg";
