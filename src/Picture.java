@@ -459,6 +459,28 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  // Chapter 05.2 -  nested loops
+  public void grayscaleNested()
+  {
+	  System.out.println("grayscaleNested");
+	  Pixel pixel = null;
+	  
+	  // loop through the column pixels
+	  for ( int x = 0; x < this.getWidth(); x++)
+	  {
+		  // loop through the rows for the pixels
+		  for ( int y = 0; y< this.getHeight(); y++)
+		  {
+			  pixel = getPixel(x, y);
+			  System.out.println(x + " " + y + " " + pixel);
+			  
+			  // grayscale
+			  int grayness = (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3;
+			  System.out.println(grayness);
+			  pixel.setColor(new Color(grayness,grayness,grayness));
+		  }
+	  }
+  }
   
   	/*
 	 * Program 18: Lighten the Picture Using Nested Loops
@@ -543,6 +565,46 @@ public class Picture extends SimplePicture
 		  }
 	  }
 	  
+  }
+  
+  // Chapter 5.3 : mirror two heads
+  public void mirrorTwoHeads()
+  {
+	  System.out.println("mirrorTwoHeads");
+	  // head 1 : 198,32 to 300,152
+	  // head 2 : 366,32 to 475,131
+	  Pixel pixel = null;
+	  int top = 32;
+	  int bottom = 152;
+	  int left = 198;
+	  int right = 475;
+	  int height = bottom; // bottom - top; // 152-32 = 120 / 2 = 60 + 32 = 92 position
+	  int copyToY = (bottom + (bottom - top)) -1;	// (bottom - top) 
+	  
+	  Pixel topPixel = null;
+	  Pixel bottomPixel = null;
+	  
+	  // loop through columns
+	  for ( int x = left; x < right; x++) //
+	  {
+		  // loop through rows
+		  for ( int y = top; y < bottom; y++) // 
+		  {
+			  // int copyToX = ;
+			  
+			  topPixel = getPixel(x,y); // 198, 32
+			  bottomPixel = getPixel(x - 170, bottom + y); // copy box lower: x, bottom + y // attempted mirror: x, copyToY
+			  bottomPixel.setColor(topPixel.getColor());
+			  copyToY--;
+			  
+			  /*
+			  // identify a white box
+			  pixel = getPixel(x, y);
+			  int value = 255;
+			  pixel.setColor(new Color(value,value,value));
+			  */
+		  }
+	  }
   }
   
   /*
@@ -1563,6 +1625,33 @@ public class Picture extends SimplePicture
 	  p.explore();
 	  */
 	  
+	// -------------Chapter 05 Problem 5.3-------------
+	  // Mirror Heads
+	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
+	  String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
+	  //String sourceFile = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/wall-two-people.jpg";
+	  Picture sourcePicture = new Picture(sourceFile);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.mirrorTwoHeads();	// keepRed(), keepGreen(), keepBlue()
+	  sourcePicture.explore(); 
+	  // ----END---------Chapter 05 Problem 5.2-------------
+	  
+	  
+	  
+	  /*
+	  // -------------Chapter 05 Problem 5.2-------------
+	  // Nested loops grayscale
+	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.grayscaleNested();	// keepRed(), keepGreen(), keepBlue()
+	  sourcePicture.explore(); 
+	  // ----END---------Chapter 05 Problem 5.2-------------
+	  */
+	  
+	  /*
 	  // -------------Chapter 04 Problem 4.20-------------
 	  //String fileName = FileChooser.getMediaPath("caterpillar.jpg");
 	  String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
@@ -1572,7 +1661,7 @@ public class Picture extends SimplePicture
 	  sourcePicture.grayscale();	// keepRed(), keepGreen(), keepBlue()
 	  sourcePicture.explore(); 
 	  // ----END---------Chapter 04 Problem 4.20-------------
-	  
+	  */
 	  
 	  
 	  /*
