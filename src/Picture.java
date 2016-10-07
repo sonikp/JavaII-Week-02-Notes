@@ -352,7 +352,31 @@ public class Picture extends SimplePicture
 	  }
   }
   
-//-------------Chapter 04 Problem 4.1------------- 
+//-------------Chapter 04 Problem 4.10------------- 
+  public void keepBlue()
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int value =  0;
+	  int red = 0;
+	  int green = 0;
+	  
+	  // loop through pixels
+	  for ( int i = 0; i < pixelArray.length; i++)
+	  {
+		  // get colors
+		  pixel = pixelArray[i];
+		  
+		  // get blue
+		  value = pixel.getBlue();
+		  
+		  // set colors
+		  pixel.setColor(new Color(red, green, value));
+		  
+	  }
+  }
+  
+//-------------Chapter 04 Problem 4.11------------- 
   public void maximizeBlue()
   {
 	  Pixel[] pixelArray = this.getPixels();
@@ -428,6 +452,7 @@ public class Picture extends SimplePicture
 		  
 		  // compute the average intensity
 		  intensity = (pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3;
+		  System.out.println(intensity);
 		  
 		  // set the pixel color
 		  pixelObj.setColor(new Color(intensity,intensity,intensity));
@@ -1538,17 +1563,97 @@ public class Picture extends SimplePicture
 	  p.explore();
 	  */
 	  
-	// -------------Chapter 04 Problem 4.10-------------
-	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  // -------------Chapter 04 Problem 4.20-------------
+	  //String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
 	  Picture sourcePicture = new Picture(fileName);
 	  System.out.println(sourcePicture);
 	  sourcePicture.explore();
-	  //sourcePicture.keepGreen();	// clearRed(), clearGreen(), clearBlue()
-	  sourcePicture.keepColor(green);	// clearRed(), clearGreen(), clearBlue()
+	  sourcePicture.grayscale();	// keepRed(), keepGreen(), keepBlue()
+	  sourcePicture.explore(); 
+	  // ----END---------Chapter 04 Problem 4.20-------------
+	  
+	  
+	  
+	  /*
+	  // -------------Chapter 04 Problem 4.13-------------
+	  //How do you get the height of a picture object
+	  String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  System.out.println(sourcePicture.getHeight());
+	  int height = sourcePicture.getHeight();
+	  System.out.println(height);
+	  // -------------Chapter 04 Problem 4.14-------------
+	  System.out.println(sourcePicture.getWidth());
+	  int width = sourcePicture.getWidth();
+	  System.out.println(width);
+	  // -------------Chapter 04 Problem 4.13-------------
+	  Picture pictureSize = new Picture(200, 100);
+	  System.out.print(pictureSize);
+	  Pixel[] pictureSizeArray = pictureSize.getPixels();
+	  System.out.println(" has " + pictureSizeArray.length + " pixels.");
+	  Picture pictureSizeTwo = new Picture(640, 480);
+	  System.out.print(pictureSizeTwo);
+	  Pixel[] pictureSizeTwoArray = pictureSizeTwo.getPixels();
+	  System.out.println(" has " + pictureSizeTwoArray.length + " pixels." );
+	  
+	  // -------------Chapter 04 Problem 4.17-------------
+	  // print out the pixel array of a picture
+	  String aFileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
+	  Picture aSourcePicture = new Picture(aFileName);
+	  Pixel[] aPixelArray = aSourcePicture.getPixels();
+	  int index = 0;
+	  
+	  while ( index < aPixelArray.length)
+	  {
+		  System.out.println(aPixelArray[index]);
+		  index++;
+	  }
+	  Pixel pixel = aPixelArray[1];
+	  //System.out.println(pixel.getRed(), pixel.getGreen(), pixel.getBlue());
+	  System.out.println(pixel.getRed());
+      System.out.println(pixel.getGreen());
+	  System.out.println(pixel.getBlue());
+	  pixel.setRed(237);
+	  
+	  //pixel.setColor(new Color(pixel.setRed(222), pixel.setGreen(222),pixel.setBlue(222));
+	  
+	  int red = 222;
+	  int green = 222;
+	  int blue = 222;
+	  pixel.setColor(new Color(red, green, blue));
+	  
+	  
+	  // ----END---------Chapter 04 Problem 4.13, 14-------------
+	  */
+	  
+	  
+	  
+	  /*
+	  // -------------Chapter 04 Problem 4.11-------------
+	  //String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.maximizeBlue();	// keepRed(), keepGreen(), keepBlue()
+	  sourcePicture.explore();
+	  // ----END---------Chapter 04 Problem 4.11-------------
+	  */
+	  
+	  /*
+	  // -------------Chapter 04 Problem 4.10-------------
+	  //String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  String fileName = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/caterpillar.jpg";
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.keepBlue();	// keepRed(), keepGreen(), keepBlue()
 	  sourcePicture.explore();
 	  // ----END---------Chapter 04 Problem 4.10-------------
-	  
-	  
+	  */
+
 	  
 	  /*
 	  // -------------Chapter 04 Problem 4.9-------------
