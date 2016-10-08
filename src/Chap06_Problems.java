@@ -3,6 +3,41 @@ public class Chap06_Problems
 	public static void main(String[] args)
 	{
 		/*
+		 * Chapter 05 problems
+		 * 
+		 * 5.1
+		 * Overloading
+		 * 
+		 * Overloading a method is when you have multiple different methods with the same name
+		 * What differentiates them is the differentes in the number and type of inputs
+		 * 
+		 * Nested Loops
+		 * 
+		 * Running one loop inside another
+		 * 
+		 * Debug:
+		 * 
+		 * Setting parameters, running output, monitoring step-through, so see what is happening in the
+		 * program and when/how
+		 * 
+		 * Rotate:
+		 * 
+		 * Transformations occur to the image by using the index variables differently and turning a picture
+		 * in one direction or another
+		 * 
+		 * Scale:
+		 * 
+		 * Make image larger or smaller. 
+		 * 
+		 * void:
+		 * 
+		 * a method parameter to tell the method that this will not have any return values
+		 * 
+		 * 
+		 */
+		
+		
+		/*
 		 * 6.1
 		 * 
 		 * Conditional Execution

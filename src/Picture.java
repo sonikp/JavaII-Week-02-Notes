@@ -573,13 +573,11 @@ public class Picture extends SimplePicture
 	  System.out.println("mirrorTwoHeads");
 	  // head 1 : 198,32 to 300,152
 	  // head 2 : 366,32 to 475,131
-	  Pixel pixel = null;
-	  int top = 32;
-	  int bottom = 152;
-	  int left = 198;
-	  int right = 475;
-	  int height = bottom; // bottom - top; // 152-32 = 120 / 2 = 60 + 32 = 92 position
-	  int copyToY = (bottom + (bottom - top)) -1;	// (bottom - top) 
+	  int top = 32;		// y-Axis
+	  int bottom = 152;	// y-Axis
+	  int left = 198;	//x-Axis
+	  int right = 475;	//x-Axis
+	  int height = (bottom - top) * 2 + 40; // bottom - top; // 152-32 = 120 
 	  
 	  Pixel topPixel = null;
 	  Pixel bottomPixel = null;
@@ -590,22 +588,48 @@ public class Picture extends SimplePicture
 		  // loop through rows
 		  for ( int y = top; y < bottom; y++) // 
 		  {
-			  // int copyToX = ;
-			  
+			  // copy pixels to 
 			  topPixel = getPixel(x,y); // 198, 32
-			  bottomPixel = getPixel(x - 170, bottom + y); // copy box lower: x, bottom + y // attempted mirror: x, copyToY
+			  bottomPixel = getPixel(x, height - 1 - y); 
 			  bottomPixel.setColor(topPixel.getColor());
-			  copyToY--;
 			  
-			  /*
-			  // identify a white box
-			  pixel = getPixel(x, y);
-			  int value = 255;
-			  pixel.setColor(new Color(value,value,value));
-			  */
 		  }
 	  }
   }
+  
+//Chapter 5.4 : mirror person so it looks conjoined
+ public void mirrorConjoined()
+ {
+	 
+	 int mirrorPoint = 278;
+	 int startX = 109;
+	 Pixel copyFromPixel = null;
+	 Pixel copyToPixel = null;
+	 
+	 
+	 // loop through column
+	 for ( int x = startX; x < mirrorPoint; x++)
+	 {
+		 // loop through rows
+		 for ( int y = 0; y < this.getHeight(); y++)
+		 {
+			 // copy pixels
+			 copyFromPixel = getPixel(x, y);
+			 copyToPixel = getPixel(mirrorPoint + (mirrorPoint - x), y);
+			 copyToPixel.setColor(copyFromPixel.getColor());
+			 
+		 }
+	 }
+ }
+  
+
+ 
+ 
+//Chapter 5.5 : mirror person so it looks conjoined
+public void blended()
+{
+	
+}
   
   /*
    * Program 21: Mirror Pixels Horizontally, Bottom to Top
@@ -894,6 +918,164 @@ public class Picture extends SimplePicture
 	  // copy the negated flower 1 to x = 400
 	  this.copyPictureTo(flower1Picture, 400);
   }
+  
+  /*
+   * Program 28: Blending Two Pictures
+   * 
+   * method to blend two sisters together
+   * onto the current picture
+   * 
+   */
+   
+  public void blendPictures()
+  {
+  	// create the sister picture
+	  Picture katiePicture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/KatieFancy.jpg"); //KatieFancy.jpg
+	  System.out.println(katiePicture);
+	  Picture horsePicture = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/horse.jpg");		//horse.jpg
+	  System.out.println(horsePicture);
+	
+	  // declare the source and target pixel variables
+	  Pixel katiePixel = null;
+	  Pixel horsePixel = null;
+	  Pixel targetPixel = null;
+	
+	   // declare the target x and source s since we will need the values after the for loop
+	  int sourceX = 0;
+	  int targetX = 0;
+	  
+	  // copy the first 150 pixels of Katie to the canvas
+	  for (; sourceX < 50; sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = 0; sourceY < katiePicture.getHeight(); sourceY++, targetY++)
+		  {
+			  katiePixel = katiePicture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(katiePixel.getColor());
+		  }
+	  }
+	  
+	  // copy 50% of katie and 50% of horse til the end of katie's width
+	  for (; sourceX < katiePicture.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = 0; sourceY < katiePicture.getHeight(); sourceY++, targetY++)
+		  {
+			  katiePixel = katiePicture.getPixel(sourceX, sourceY);
+			  horsePixel = horsePicture.getPixel(sourceX - 50, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(new Color((int)(katiePixel.getRed() * 0.5 + horsePixel.getRed() * 0.5), 
+					  (int)(katiePixel.getGreen() * 0.5 + horsePixel.getGreen() * 0.5),
+					  (int)(katiePixel.getBlue() * 0.5 + horsePixel.getBlue() * 0.5)));
+		  }
+	  }
+	  
+	  // copy the rest of horse
+	  sourceX = sourceX - 20;
+	  for (; sourceX < horsePicture.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = 0; sourceY < horsePicture.getHeight(); sourceY++, targetY++ )
+		  {
+			  horsePixel = horsePicture.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(horsePixel.getColor());
+		  }
+	  }
+	  
+  }
+  
+  //Chapter 5.5 : blended two pictures
+  public void blendTwoPictures()
+  {
+	// create the sister picture
+	  Picture picture1 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/jenny1-green-small.jpg"); 
+	  System.out.println(picture1);
+	  Picture picture2 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/jenny2-green-small.jpg");	
+	  System.out.println(picture2); 
+	  
+	  // declare source and target pixels
+	  Pixel picture1Pixel = null;
+	  Pixel picture2Pixel = null;
+	  Pixel targetPixel = null;
+	  
+	  // declare sourceX & targetX since we need them after the loop
+	  int sourceX = 0;
+	  int targetX = 0;
+	  
+	  // copy the first 4 pixels in the column to the target
+	  for (; sourceX < 4; sourceX++, targetX++ )
+	  {
+		// copy the first 4 pixels in the row to the target
+		  for ( int sourceY = 0, targetY = 0; sourceY < picture1.getHeight(); sourceY++, targetY++)
+		  {
+			  picture1Pixel = picture1.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX,targetY);
+			  targetPixel.setColor(picture1Pixel.getColor());	 
+		  }
+	  }
+	  
+	  // copy the columns for the middle section for the overlap
+	  for (; sourceX < picture1.getWidth(); sourceX++, targetX++)
+	  {
+		  // copy the rows for the middle section for the overlap
+		  for (int sourceY = 0, targetY = 0; sourceY < picture1.getHeight(); sourceY++, targetY++)
+		  {
+			  picture1Pixel = picture1.getPixel(sourceX, sourceY);
+			  picture2Pixel = picture2.getPixel(sourceX - 4, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(new Color((int)(picture1Pixel.getRed() * 0.5 + picture2Pixel.getRed() * 0.5),
+					  (int)(picture1Pixel.getGreen() * 0.5 + picture2Pixel.getGreen() * 0.5),
+					  (int)(picture1Pixel.getBlue() * 0.5 + picture2Pixel.getBlue() * 0.5)));
+			  
+		  }
+	  }
+	  
+	  // copy the last columns for the end section after the overlap
+	  sourceX = sourceX - 4;
+	  for (; sourceX < picture2.getWidth(); sourceX++, targetX++)
+	  {
+		  for (int sourceY = 0, targetY = 0; sourceY < picture2.getHeight(); sourceY++, targetY++)
+		  {
+			  picture2Pixel = picture2.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);			  
+			  targetPixel.setColor(picture2Pixel.getColor());
+		  }
+	  }
+
+  }
+  
+//Chapter 5.6 : blended two pictures, ratio 20% - 60% - 20%
+  public void blendAnotherTwoPictures()
+  {
+	// create the sister picture
+	  Picture picture1 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower1.jpg"); 
+	  System.out.println(picture1);
+	  Picture picture2 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower2.jpg");	
+	  System.out.println(picture2); 
+	  
+	  // declare source and target pixels
+	  Pixel picture1Pixel = null;
+	  Pixel picture2Pixel = null;
+	  Pixel targetPixel = null;
+	  
+	  // declare sourceX and targetX, needed after the loops
+	  int sourceX = 0;
+	  int targetX = 0;
+	  
+	  // loop through the first columns
+	  for (; sourceX < picture1.getWidth(); sourceX++, targetX++)
+	  {
+		  for ( int sourceY = 0, targetY = 0; sourceY < picture1.getHeight(); sourceY++, targetY++)
+		  {
+			  // get pixel colors
+			  picture1Pixel = picture1.getPixel(sourceX, sourceY);
+			  targetPixel = this.getPixel(targetX, targetY);
+			  targetPixel.setColor(picture1Pixel.getColor());
+		  }
+	  }
+	  
+	  
+  }
+  
   
   /*
    * Program 30: Scaling down a picture (Smaller)
@@ -1612,31 +1794,60 @@ public class Picture extends SimplePicture
 	  
 	  System.out.println("blank");
 	  
-	  // @Lnx
-	  //String sourceFile = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/KatieFancy.jpg";
-	  // @MAC
-	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/blue-mark.jpg";
-	  /*
-	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
-	  Picture p = new Picture(fileName);
-	  p.clearBlue();
-	  p.explore();
-	  p.increaseRed();
-	  p.explore();
-	  */
-	  
-	// -------------Chapter 05 Problem 5.3-------------
-	  // Mirror Heads
+	  // -------------Chapter 05 Problem 5.6-------------
+	  // Create overlap, 20% to 60 % to 20 %
 	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
-	  String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
-	  //String sourceFile = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/wall-two-people.jpg";
+	  //String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
+	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/7inX95in.jpg";
 	  Picture sourcePicture = new Picture(sourceFile);
 	  System.out.println(sourcePicture);
 	  sourcePicture.explore();
-	  sourcePicture.mirrorTwoHeads();	// keepRed(), keepGreen(), keepBlue()
+	  sourcePicture.blendAnotherTwoPictures();	// blendAnotherTwoPictures(),  blendTwoPictures()
 	  sourcePicture.explore(); 
-	  // ----END---------Chapter 05 Problem 5.2-------------
+	  // ----END---------Chapter 05 Problem 5.5-------------
 	  
+	  
+	  /*
+	  // -------------Chapter 05 Problem 5.5-------------
+	  // Create overlap, 10% to 80 % to 10 %
+	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
+	  //String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
+	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/7inX95in.jpg";
+	  Picture sourcePicture = new Picture(sourceFile);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.blendTwoPictures();	// blendPictures();; blendTwoPictures()
+	  sourcePicture.explore(); 
+	  // ----END---------Chapter 05 Problem 5.5-------------
+	  */
+	  
+	  /*
+	  // -------------Chapter 05 Problem 5.4-------------
+	  // Mirror conjoined
+	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
+	  //String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
+	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/wall-two-people.jpg";
+	  Picture sourcePicture = new Picture(sourceFile);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.mirrorConjoined();	// mirrorTwoHeads(), mirrorConjoined()
+	  sourcePicture.explore(); 
+	  // ----END---------Chapter 05 Problem 5.4-------------
+	  */
+	  
+	  /*
+	  // -------------Chapter 05 Problem 5.3-------------
+	  // Mirror Heads
+	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
+	  //String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
+	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/wall-two-people.jpg";
+	  Picture sourcePicture = new Picture(sourceFile);
+	  System.out.println(sourcePicture);
+	  sourcePicture.explore();
+	  sourcePicture.mirrorTwoHeads();	// mirrorTwoHeads(), mirrorHorizontal(), 
+	  sourcePicture.explore(); 
+	  // ----END---------Chapter 05 Problem 5.3-------------
+	  */
 	  
 	  
 	  /*
@@ -1780,6 +1991,19 @@ public class Picture extends SimplePicture
 	  
 	  // ------------------------------------Below this line is junk-------------------------
 	  
+	  
+	  // @Lnx
+	  //String sourceFile = "/home/notroot/Java/JavaII/AdditionalSoftware/mediasources/KatieFancy.jpg";
+	  // @MAC
+	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/blue-mark.jpg";
+	  /*
+	  String fileName = FileChooser.getMediaPath("caterpillar.jpg");
+	  Picture p = new Picture(fileName);
+	  p.clearBlue();
+	  p.explore();
+	  p.increaseRed();
+	  p.explore();
+	  */
 	  
 	  /*
 	  String fileName = FileChooser.getMediaPath("7inX95in.jpg");
