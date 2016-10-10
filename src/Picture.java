@@ -153,6 +153,35 @@ public class Picture extends SimplePicture
   }
   
   /*
+   * Problem 5.7 reduce redness by a parameter
+   */
+  public void decreaseRed(int parameter)
+  {
+	  Pixel[] pixelArray = this.getPixels();
+	  Pixel pixel = null;
+	  int index = 0;
+	  int valueRed = 0;
+	  System.out.println(parameter);
+	  
+	  while ( index < pixelArray.length)
+	  {
+		  // get pixels
+		  pixel = pixelArray[index];
+		  
+		  // get red color value
+		  valueRed = pixel.getRed();
+		  
+		  // reduce value by a specified parameter amount
+		  pixel.setRed(valueRed - parameter);
+		  
+		  index++;
+		  
+	  }
+	  
+  }
+  
+  
+  /*
    * Problem 4.5 reduce the redness by 10% and again by 20%
    */
   public void reduceRedness(int inputNum)
@@ -658,7 +687,7 @@ public void blended()
   }
   
   /*
-   * move only a section
+   * Program22: move only a section
    * 
    */
   
@@ -692,6 +721,29 @@ public void blended()
 		  }
 	  }
 	  System.out.println("Copied " + count + " pixels");
+  }
+  
+  // Problem 5.8:  needs start, stop, x, y points //97, 276, 13, 27
+  public void mirrorSection(int start, int stop, int xAxis, int yAxis)
+  {
+	  int mirrorPoint = stop;
+	  Pixel leftPixel = null;
+	  Pixel rightPixel = null;
+	  
+	  
+	  // loop through the rows
+	  for ( int y = yAxis; y < start; y++)			// int y = 27; y < 97; y++
+	  {
+		  // loop through the columns
+		  for ( int x = xAxis; x < mirrorPoint; x++)	//  int x = 13; x < mirrorPoint; x++
+		  {
+			  leftPixel = getPixel(x, y);
+			  rightPixel = getPixel(mirrorPoint + (mirrorPoint - x), y);
+			  rightPixel.setColor(leftPixel.getColor());
+			  
+		  }
+	  }
+	  
   }
   
   /*
@@ -1047,9 +1099,12 @@ public void blended()
   public void blendAnotherTwoPictures()
   {
 	// create the sister picture
-	  Picture picture1 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower1.jpg"); 
+	  //Picture picture1 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower1.jpg"); 
+	  //FileChooser.getMediaPath(
+	  Picture picture1 = new Picture(FileChooser.getMediaPath("flower1.jpg"));
 	  System.out.println(picture1);
-	  Picture picture2 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower2.jpg");	
+	  //Picture picture2 = new Picture("/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/flower2.jpg");	
+	  Picture picture2 = new Picture(FileChooser.getMediaPath("flower2.jpg"));
 	  System.out.println(picture2); 
 	  
 	  // declare source and target pixels
@@ -1794,18 +1849,56 @@ public void blended()
 	  
 	  System.out.println("blank");
 	  
+	  // ------------Chapter 05 Problem 5.9-------------
+	  String fileName = FileChooser.getMediaPath("640x480.jpg");
+	  Picture sourcePicture = new Picture(fileName);
+	  System.out.println(sourcePicture);
+	  sourcePicture.copyPictureLarger();
+	  sourcePicture.explore();
+	  
+	  // ----END---------Chapter 05 Problem 5.9-------------
+	  
+	  /*
+	  // ------------Chapter 05 Problem 5.8-------------
+	  // Mirror by passing in start, stop, x, y points
+	  String fileName = FileChooser.getMediaPath("oxford-cricketers.jpg");
+	  //String fileName = FileChooser.getMediaPath("temple.jpg");
+	  Picture sourcePhoto = new Picture(fileName);
+	  System.out.println(sourcePhoto);
+	  sourcePhoto.explore();
+	  sourcePhoto.mirrorSection(382, 450, 383, 327);		// needs start, stop, x, y points 97, 276, 13, 27
+	  sourcePhoto.explore();
+	  // ----END---------Chapter 05 Problem 5.8-------------
+	  */
+	  
+	  
+	  /*
+	  // ------------Chapter 05 Problem 5.7-------------
+	  // decrease red by a specified parameter amount
+	  String fileName = FileChooser.getMediaPath("grayMotorcycle.jpg");
+	  Picture sourcePhoto = new Picture(fileName);
+	  System.out.println(sourcePhoto);
+	  sourcePhoto.explore();
+	  sourcePhoto.decreaseRed(33);				// takes a parameter amount to reduce red by
+	  sourcePhoto.explore();							
+	  // ----END---------Chapter 05 Problem 5.7-------------
+	  */
+	  
+	  
+	  /*
 	  // -------------Chapter 05 Problem 5.6-------------
 	  // Create overlap, 20% to 60 % to 20 %
 	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
 	  //String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
-	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/7inX95in.jpg";
+	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/7inX95in.jpg";
+	  String sourceFile = FileChooser.getMediaPath("7inX95in.jpg");
 	  Picture sourcePicture = new Picture(sourceFile);
 	  System.out.println(sourcePicture);
 	  sourcePicture.explore();
 	  sourcePicture.blendAnotherTwoPictures();	// blendAnotherTwoPictures(),  blendTwoPictures()
 	  sourcePicture.explore(); 
-	  // ----END---------Chapter 05 Problem 5.5-------------
-	  
+	  // ----END---------Chapter 05 Problem 5.6-------------
+	  */
 	  
 	  /*
 	  // -------------Chapter 05 Problem 5.5-------------
@@ -1825,8 +1918,8 @@ public void blended()
 	  // -------------Chapter 05 Problem 5.4-------------
 	  // Mirror conjoined
 	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
-	  //String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
-	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/wall-two-people.jpg";
+	  String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
+	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/wall-two-people.jpg";
 	  Picture sourcePicture = new Picture(sourceFile);
 	  System.out.println(sourcePicture);
 	  sourcePicture.explore();
@@ -1839,8 +1932,8 @@ public void blended()
 	  // -------------Chapter 05 Problem 5.3-------------
 	  // Mirror Heads
 	  //String fileName = FileChooser.getMediaPath("wall-two-people.jpg");
-	  //String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
-	  String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/wall-two-people.jpg";
+	  String sourceFile = FileChooser.getMediaPath("wall-two-people.JPG");
+	  //String sourceFile = "/Users/mfloerchinger/Documents/z.JavaProgramming/UCSD/Java II/CourseCD/mediasources/wall-two-people.jpg";
 	  Picture sourcePicture = new Picture(sourceFile);
 	  System.out.println(sourcePicture);
 	  sourcePicture.explore();
